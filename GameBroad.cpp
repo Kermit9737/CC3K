@@ -126,6 +126,12 @@ int GameBroad::run_cmd(Player& _New_Player,string _cmd) {//返回是否重启游戏
             if (_cmd == "no") {
                 int _location[2] = { 0,1 };//x不变，y+1
                 _New_Player.set_location(_location);//传回数组进行修改
+                if (this->judge_attacked() == true) {
+                    NPC* NPC_string = this->return_NPC();//返回在玩家身边的NPC,作为一个数组
+                    int Count = this->NPCstring_len(NPC_string);//获得NPC_string的长度
+                    for (int i = 0; i < Count; i++) {
+                        this->game_ref_injured(_New_Player, NPC_string[i]);//被攻击使用
+                    }
             }
             if (_cmd == "so") {
                 int _location[2] = { 0,-1 };
@@ -144,26 +150,62 @@ int GameBroad::run_cmd(Player& _New_Player,string _cmd) {//返回是否重启游戏
             if (_cmd == "ea") {
                 int _location[2] = { 1,0 };
                 _New_Player.set_location(_location);
+                if (this->judge_attacked() == true) {
+                    NPC* NPC_string = this->return_NPC();//返回在玩家身边的NPC,作为一个数组
+                    int Count = this->NPCstring_len(NPC_string);//获得NPC_string的长度
+                    for (int i = 0; i < Count; i++) {
+                        this->game_ref_injured(_New_Player, NPC_string[i]);//被攻击使用
+                    }
             }
             if (_cmd == "we") {
                 int _location[2] = { -1,0 };
                 _New_Player.set_location(_location);
+                if (this->judge_attacked() == true) {
+                    NPC* NPC_string = this->return_NPC();//返回在玩家身边的NPC,作为一个数组
+                    int Count = this->NPCstring_len(NPC_string);//获得NPC_string的长度
+                    for (int i = 0; i < Count; i++) {
+                        this->game_ref_injured(_New_Player, NPC_string[i]);//被攻击使用
+                    }
             }
             if (_cmd == "ne") {
                 int _location[2] = { 1,1 };
                 _New_Player.set_location(_location);
+                if (this->judge_attacked() == true) {
+                    NPC* NPC_string = this->return_NPC();//返回在玩家身边的NPC,作为一个数组
+                    int Count = this->NPCstring_len(NPC_string);//获得NPC_string的长度
+                    for (int i = 0; i < Count; i++) {
+                        this->game_ref_injured(_New_Player, NPC_string[i]);//被攻击使用
+                    }
             }
             if (_cmd == "nw") {
                 int _location[2] = { -1,1 };
                 _New_Player.set_location(_location);
+                if (this->judge_attacked() == true) {
+                    NPC* NPC_string = this->return_NPC();//返回在玩家身边的NPC,作为一个数组
+                    int Count = this->NPCstring_len(NPC_string);//获得NPC_string的长度
+                    for (int i = 0; i < Count; i++) {
+                        this->game_ref_injured(_New_Player, NPC_string[i]);//被攻击使用
+                    }
             }
             if (_cmd == "se") {
                 int _location[2] = { 1,-1 };
                 _New_Player.set_location(_location);
+                if (this->judge_attacked() == true) {
+                    NPC* NPC_string = this->return_NPC();//返回在玩家身边的NPC,作为一个数组
+                    int Count = this->NPCstring_len(NPC_string);//获得NPC_string的长度
+                    for (int i = 0; i < Count; i++) {
+                        this->game_ref_injured(_New_Player, NPC_string[i]);//被攻击使用
+                    }
             }
             if (_cmd == "sw") {
                 int _location[2] = { -1,-1 };
                 _New_Player.set_location(_location);
+                if (this->judge_attacked() == true) {
+                    NPC* NPC_string = this->return_NPC();//返回在玩家身边的NPC,作为一个数组
+                    int Count = this->NPCstring_len(NPC_string);//获得NPC_string的长度
+                    for (int i = 0; i < Count; i++) {
+                        this->game_ref_injured(_New_Player, NPC_string[i]);//被攻击使用
+                    }
             }
         } 
         else if (this->judge_move_legal(_New_Player, _cmd) == false)//如果这个位置不可以走
