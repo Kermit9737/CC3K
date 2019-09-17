@@ -1,5 +1,6 @@
 #include "GameBroad.h"
-#include"Player.h"
+#include "Player.h"
+#include"NPC.h"
 
 #include<iostream>
 #include<stdio.h>
@@ -8,6 +9,7 @@
 using namespace std;
 
 class Player;
+class NPC;
 
 GameBroad::GameBroad()
 {
@@ -25,7 +27,7 @@ void GameBroad:: start_game(Player&  _New_player) {
     {
         //开始一局游戏
         _New_player.select_character();//选择种族
-        _New_player.set_location(this->creat_randoms());
+        _New_player.set_location(this->creat_randoms(_New_player.get_level()));
         //把GameBroad产生的随机数传入，并修改location
         this->get_map();
         //this->print_map(_New_player);//只负责将地图打印出来
@@ -34,7 +36,8 @@ void GameBroad:: start_game(Player&  _New_player) {
             //交互循环
             this->refresh_screen();
             string Cmd = this->get_cmd();
-            if (this->run_cmd(this->judge_cmd(Cmd)) == -2) {
+            if (this->run_cmd(_New_player,this->judge_cmd(Cmd)) == -2) {
+                //重新开始游戏
                 break;
             }
             if (this->judge_win() == Win){
@@ -53,7 +56,7 @@ void GameBroad:: start_game(Player&  _New_player) {
     }
 }
 
-int* GameBroad::creat_randoms()
+int* GameBroad::creat_randoms(int _level)
 {
     //产生随机数int[2]并返回
     bool Legal = false;
@@ -63,13 +66,13 @@ int* GameBroad::creat_randoms()
         int _random[2];
         _random[0] = rand() % 79;//产生0-78的随机数
         _random[1] = rand() % 30;//产生0-29的随机数
-        Legal = this->judge_elements_legal(_random);//判断产生的随机地址是否合法，合法Legal变为true
+        Legal = this->judge_elements_legal(_level,_random);//判断产生的随机地址是否合法，合法Legal变为true
         if (Legal)
             return _random;
     }
 }
 
-bool GameBroad :: judge_elements_legal(Player _temp_player,int _random[2]) {
+bool GameBroad :: judge_elements_legal(int _level,int _random[2]) {
     //判断生成的随机地址受否合法，合法返回true
     return true;
 }
@@ -127,6 +130,16 @@ int GameBroad::run_cmd(Player& _New_Player,string _cmd) {//返回是否重启游戏
             if (_cmd == "so") {
                 int _location[2] = { 0,-1 };
                 _New_Player.set_location(_location);
+                if (this->judge_attacked() == true){
+                    NPC* NPC_string = this->return_NPC();//返回在玩家身边的NPC,作为一个数组
+                    int Count = this->NPCstring_len(NPC_string);//获得NPC_string的长度
+                    for (int i = 0; i < Count; i++) {
+                        this->game_ref_injured(_New_Player, NPC_string[i]);//被攻击使用
+                        //_New_Player.lose_HP(NPC_string[i].deal_damage());
+                    }
+
+
+                }
             }
             if (_cmd == "ea") {
                 int _location[2] = { 1,0 };
@@ -152,7 +165,12 @@ int GameBroad::run_cmd(Player& _New_Player,string _cmd) {//返回是否重启游戏
                 int _location[2] = { -1,-1 };
                 _New_Player.set_location(_location);
             }
-
-        }
+        } 
+        else if (this->judge_move_legal(_New_Player, _cmd) == false)//如果这个位置不可以走
+        {
+            cout << "不可以走这里" << endl;
+            return 0;//什么都不做
+         }
     }
+ 
 }

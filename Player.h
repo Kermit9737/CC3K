@@ -24,7 +24,7 @@ public:
     void lose_HP(int _damage);//传入敌人的伤害量，计算之后修改生命值
 //    void get_HP(Potion _potion);//传入一个药水，修改HP
     void recover(int _recover_HP);//回复效果
-
+    int get_level();//返回玩家所在的楼层
     ~Player();
 };
 

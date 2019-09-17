@@ -1,19 +1,23 @@
 #include<iostream>
 #include<string>
+//#include"NPC.h"
 //#include"Player.h"
 using namespace std;
 enum JUDGE {Win,Lose,Playing};
 
 class Player;
+class NPC;
+
 
 class GameBroad
 {
 private:
-    char Map[5][79][30];//定义地图
     JUDGE Game_judge;//定义游戏胜利或者失败或者正在进行中
     int Dungeon_Level;//定义地牢的层数
 
 public:
+    char Map[5][79][30];//定义地图
+
     GameBroad();
 
     //virtual void get_map() = 0;//从文件中读取地图，然后保存到Map[79][30]种
@@ -32,7 +36,7 @@ public:
     void get_map();//从文件中读取地图，然后保存到Map[79][30]中
     void print_map(Player _New_player);//将地图打印到屏幕上，判断玩家现在在第几层
     JUDGE judge_win();//判断是否获得胜利
-    int* creat_randoms();//产生随机数int[2]并返回
+    int* creat_randoms(int _level);//产生随机数int[2]并返回
     //bool judge_alive();//有必要吗？
     void start_game(Player& _New_player);//开始一局游戏（是不是应该定义常规函数？）
     void show_player();//显示玩家的位置（可不可以在refresh_screen里？）
@@ -42,10 +46,15 @@ public:
     void show_help();//显示帮助界面
     void refresh_screen();//刷新屏幕
     bool judge_flght();//判断是否发生战斗。如果发生战斗，执行战斗伤害结算；若没有，返回false
-    bool judge_elements_legal(Player _temp_player,int _random[2]);//判断生成的随机地址受否合法，合法返回true
+    bool judge_attacked();//判断是否被攻击，是返回true
+    NPC* return_NPC();//返回玩家周围的NPC，返回一个长度是8 的NPC数组，如果不满可以是空
+    int NPCstring_len(NPC* _NPC_string);//返回
+    bool judge_elements_legal(int level,int _random[2]);//判断生成的随机地址受否合法，合法返回true
     void creat_items();//在地图上添加物品,生成玩家,一次五层,内部调用creat_randoms()
     bool judge_move_legal(Player& _New_Player,string _move);//判断玩家选择的方向可不可以走，可以返回true
-    int get_player_lever(Player _New_Player);//获得玩家现在的楼层数
+    int get_player_level(Player _New_Player);//获得玩家现在的楼层数
+    void game_ref_injured(Player& _New_Player, NPC& _NPC);//玩家被攻击时的特殊规则判断，包含对玩家造成伤害
+    void game_ref_attack(Player& _New_Player, NPC& _NPC);//玩家攻击时候的特殊规则判断，包含玩家对NPC造成伤害
 
     ~GameBroad();
 };
